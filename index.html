@@ -3,614 +3,706 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureFile - Enkripsi File Online</title>
+    <title>DevToolsHub - All-in-One Developer Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@javascript-obfuscator/core/dist/index.browser.js"></script>
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --success: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --danger: #e63946;
-            --gray: #6c757d;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #1f2937;
+            --darker: #111827;
+            --light: #f3f4f6;
+            --lighter: #f9fafb;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
         }
-        
+
+        .dark-mode {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --secondary: #34d399;
+            --dark: #f3f4f6;
+            --darker: #f9fafb;
+            --light: #1f2937;
+            --lighter: #111827;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--lighter);
+            color: var(--dark);
+            line-height: 1.6;
         }
-        
+
         .container {
             width: 100%;
-            max-width: 800px;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        
+
         header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        header h1 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-        }
-        
-        header p {
-            color: var(--gray);
-            font-size: 1.1rem;
-        }
-        
-        .upload-area {
-            border: 2px dashed var(--primary);
-            border-radius: 10px;
-            padding: 40px 20px;
-            text-align: center;
-            margin-bottom: 25px;
-            transition: all 0.3s;
-            background-color: rgba(67, 97, 238, 0.05);
-            cursor: pointer;
-        }
-        
-        .upload-area:hover, .upload-area.dragover {
-            background-color: rgba(67, 97, 238, 0.1);
-            border-color: var(--secondary);
-        }
-        
-        .upload-area i {
-            font-size: 50px;
-            color: var(--primary);
-            margin-bottom: 15px;
-            display: block;
-        }
-        
-        .upload-area p {
-            color: var(--gray);
-            margin-bottom: 15px;
-        }
-        
-        .upload-area .browse-btn {
             background-color: var(--primary);
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
-        .upload-area .browse-btn:hover {
-            background-color: var(--secondary);
-        }
-        
-        #file-input {
-            display: none;
-        }
-        
-        .file-info {
-            background-color: var(--light);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .file-info.active {
-            display: block;
-        }
-        
-        .file-info h3 {
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-        
-        .file-details {
+
+        nav {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            align-items: center;
         }
-        
-        .password-section {
-            margin-bottom: 25px;
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
         }
-        
-        .password-section label {
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .tool-card p {
+            color: #6b7280;
+        }
+
+        .tool-section {
+            display: none;
+            margin: 2rem 0;
+        }
+
+        .tool-section.active {
             display: block;
-            margin-bottom: 8px;
+        }
+
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button i {
+            margin-right: 5px;
+        }
+
+        .code-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .code-container {
+                flex-direction: row;
+            }
+            
+            .code-input, .code-output {
+                width: 50%;
+            }
+        }
+
+        .code-input, .code-output {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border: 1px solid #d1d5db;
+            border-radius: 0 0 5px 5px;
+            resize: vertical;
+            background-color: var(--light);
             color: var(--dark);
+        }
+
+        .code-output pre {
+            min-height: 300px;
+            padding: 1rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border: 1px solid #d1d5db;
+            border-radius: 0 0 5px 5px;
+            background-color: var(--light);
+            color: var(--dark);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .tool-options {
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-group {
+            margin-bottom: 1rem;
+        }
+
+        .option-group label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 500;
         }
-        
-        .password-input {
+
+        .option-group select, .option-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-bottom: 15px;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background-color: var(--lighter);
+            color: var(--dark);
         }
-        
-        .password-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
-        
+
         .btn {
-            padding: 12px 25px;
+            padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
             font-weight: 500;
-            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
         .btn-primary {
             background-color: var(--primary);
             color: white;
         }
-        
+
         .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
             background-color: var(--secondary);
-        }
-        
-        .btn-success {
-            background-color: var(--success);
             color: white;
         }
-        
-        .btn-success:hover {
+
+        .btn-secondary:hover {
             opacity: 0.9;
         }
-        
-        .btn:disabled {
-            background-color: var(--gray);
-            cursor: not-allowed;
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
         }
-        
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .progress-container {
-            margin-top: 20px;
-            display: none;
-        }
-        
-        .progress-container.active {
-            display: block;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-        
-        .progress {
-            height: 100%;
+
+        .btn-outline:hover {
             background-color: var(--primary);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        .status-text {
-            text-align: center;
-            color: var(--gray);
-        }
-        
-        .download-section {
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-        
-        .download-section.active {
-            display: block;
-        }
-        
-        .download-btn {
-            display: inline-block;
-            background-color: var(--success);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
-        
-        .download-btn:hover {
-            opacity: 0.9;
             color: white;
         }
-        
+
         footer {
-            margin-top: 40px;
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
             text-align: center;
-            color: var(--gray);
-            font-size: 0.9rem;
         }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 5px;
+            color: white;
+            background-color: var(--success);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
             }
             
-            header h1 {
+            .hero h1 {
                 font-size: 2rem;
             }
             
-            .action-buttons {
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .actions {
                 flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>SecureFile</h1>
-            <p>Enkripsi file Anda dengan aman menggunakan AES-256</p>
-        </header>
-        
-        <div class="upload-area" id="upload-area">
-            <i>📁</i>
-            <p>Seret dan lepas file di sini atau</p>
-            <button class="browse-btn">Pilih File</button>
-            <input type="file" id="file-input">
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-tools"></i>
+                    <span>DevToolsHub</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Tools</a></li>
+                    <li><a href="#">Docs</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
         </div>
-        
-        <div class="file-info" id="file-info">
-            <h3>File Dipilih</h3>
-            <div class="file-details">
-                <span>Nama:</span>
-                <span id="file-name">-</span>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>All-in-One Developer Tools</h1>
+            <p>Kumpulan alat untuk membantu workflow development Anda. Obfuscate code, format, convert, dan banyak lagi!</p>
+        </section>
+
+        <div class="tools-grid" id="toolsGrid">
+            <div class="tool-card" data-tool="obfuscator">
+                <i class="fas fa-lock"></i>
+                <h3>Code Obfuscator</h3>
+                <p>Amankan kode Anda dengan mengubahnya menjadi sulit dibaca tetapi tetap dapat dijalankan</p>
             </div>
-            <div class="file-details">
-                <span>Ukuran:</span>
-                <span id="file-size">-</span>
+            <div class="tool-card" data-tool="formatter">
+                <i class="fas fa-indent"></i>
+                <h3>Code Formatter</h3>
+                <p>Format kode Anda agar rapi dan mudah dibaca dengan dukungan berbagai bahasa</p>
             </div>
-            <div class="file-details">
-                <span>Tipe:</span>
-                <span id="file-type">-</span>
+            <div class="tool-card" data-tool="minifier">
+                <i class="fas fa-compress-alt"></i>
+                <h3>Code Minifier</h3>
+                <p>Perkecil ukuran file kode Anda dengan menghapus karakter yang tidak diperlukan</p>
+            </div>
+            <div class="tool-card" data-tool="converter">
+                <i class="fas fa-exchange-alt"></i>
+                <h3>Converter</h3>
+                <p>Konversi antara berbagai format: JSON, XML, YAML, dan banyak lagi</p>
+            </div>
+            <div class="tool-card" data-tool="validator">
+                <i class="fas fa-check-circle"></i>
+                <h3>Validator</h3>
+                <p>Validasi kode dan data Anda untuk memastikan tidak ada error</p>
+            </div>
+            <div class="tool-card" data-tool="generator">
+                <i class="fas fa-barcode"></i>
+                <h3>Generator</h3>
+                <p>Buat UUID, hash, password, dan data acak lainnya dengan mudah</p>
             </div>
         </div>
-        
-        <div class="password-section">
-            <label for="password">Kata Sandi Enkripsi:</label>
-            <input type="password" id="password" class="password-input" placeholder="Masukkan kata sandi yang kuat">
-        </div>
-        
-        <div class="action-buttons">
-            <button id="encrypt-btn" class="btn btn-primary" disabled>Enkripsi File</button>
-            <button id="decrypt-btn" class="btn btn-success" disabled>Dekripsi File</button>
-        </div>
-        
-        <div class="progress-container" id="progress-container">
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
+
+        <!-- Obfuscator Tool Section -->
+        <section id="obfuscatorTool" class="tool-section">
+            <div class="tool-header">
+                <h2><i class="fas fa-lock"></i> Code Obfuscator</h2>
+                <button class="back-button" id="backButton">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
+                </button>
             </div>
-            <p class="status-text" id="status-text">Memproses...</p>
-        </div>
-        
-        <div class="download-section" id="download-section">
-            <p>File Anda telah siap!</p>
-            <a id="download-link" class="download-btn" download>Unduh File</a>
-        </div>
-    </div>
-    
+
+            <div class="tool-options">
+                <div class="option-group">
+                    <label for="languageSelect">Pilih Bahasa</label>
+                    <select id="languageSelect">
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="css">CSS</option>
+                        <option value="html">HTML</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label for="obfuscationLevel">Tingkat Obfuscation</label>
+                    <select id="obfuscationLevel">
+                        <option value="low">Rendah</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">Tinggi</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-input">
+                    <div class="code-header">
+                        <span>Input Kode</span>
+                        <button class="btn-outline btn-sm" id="clearInput">
+                            <i class="fas fa-trash"></i> Bersihkan
+                        </button>
+                    </div>
+                    <textarea id="inputCode" placeholder="Tempel kode Anda di sini..."></textarea>
+                </div>
+                <div class="code-output">
+                    <div class="code-header">
+                        <span>Hasil Obfuscation</span>
+                        <button class="btn-outline btn-sm" id="copyOutput">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <pre id="outputCode"></pre>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="obfuscateButton">
+                    <i class="fas fa-lock"></i> Obfuscate Kode
+                </button>
+                <button class="btn btn-secondary" id="downloadButton">
+                    <i class="fas fa-download"></i> Download Hasil
+                </button>
+            </div>
+        </section>
+
+        <!-- Other tool sections would be added here -->
+    </main>
+
     <footer>
-        <p>© 2023 SecureFile - Enkripsi File Online</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">
+                    <i class="fas fa-tools"></i>
+                    <span>DevToolsHub</span>
+                </div>
+                <p>Platform all-in-one tools untuk developer Indonesia</p>
+                <ul class="footer-links">
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#">Tools</a></li>
+                    <li><a href="#">Dokumentasi</a></li>
+                    <li><a href="#">Tentang Kami</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+                <p>© 2023 DevToolsHub. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elemen DOM
-            const uploadArea = document.getElementById('upload-area');
-            const fileInput = document.getElementById('file-input');
-            const fileInfo = document.getElementById('file-info');
-            const fileName = document.getElementById('file-name');
-            const fileSize = document.getElementById('file-size');
-            const fileType = document.getElementById('file-type');
-            const passwordInput = document.getElementById('password');
-            const encryptBtn = document.getElementById('encrypt-btn');
-            const decryptBtn = document.getElementById('decrypt-btn');
-            const progressContainer = document.getElementById('progress-container');
-            const progressBar = document.getElementById('progress');
-            const statusText = document.getElementById('status-text');
-            const downloadSection = document.getElementById('download-section');
-            const downloadLink = document.getElementById('download-link');
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const toolsGrid = document.getElementById('toolsGrid');
+        const toolSections = document.querySelectorAll('.tool-section');
+        const backButton = document.getElementById('backButton');
+        const obfuscateButton = document.getElementById('obfuscateButton');
+        const copyOutputButton = document.getElementById('copyOutput');
+        const clearInputButton = document.getElementById('clearInput');
+        const downloadButton = document.getElementById('downloadButton');
+        const inputCode = document.getElementById('inputCode');
+        const outputCode = document.getElementById('outputCode');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Tool Navigation
+        toolsGrid.addEventListener('click', (e) => {
+            const toolCard = e.target.closest('.tool-card');
+            if (!toolCard) return;
             
-            let selectedFile = null;
-            
-            // Event listeners untuk area upload
-            uploadArea.addEventListener('click', () => {
-                fileInput.click();
+            const toolId = toolCard.dataset.tool;
+            showToolSection(toolId);
+        });
+
+        backButton.addEventListener('click', () => {
+            showToolSection(null);
+        });
+
+        function showToolSection(toolId) {
+            // Hide all tool sections
+            toolSections.forEach(section => {
+                section.classList.remove('active');
             });
             
-            fileInput.addEventListener('change', handleFileSelect);
+            // Show specific tool section if provided
+            if (toolId) {
+                const toolSection = document.getElementById(`${toolId}Tool`);
+                if (toolSection) {
+                    toolSection.classList.add('active');
+                    window.scrollTo(0, 0);
+                }
+            }
+        }
+
+        // Obfuscation functionality
+        obfuscateButton.addEventListener('click', () => {
+            const code = inputCode.value.trim();
+            if (!code) {
+                showNotification('Masukkan kode terlebih dahulu', 'warning');
+                return;
+            }
+
+            const language = document.getElementById('languageSelect').value;
+            const level = document.getElementById('obfuscationLevel').value;
             
-            // Drag and drop functionality
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, preventDefaults, false);
+            try {
+                let obfuscatedCode = '';
+                
+                if (language === 'javascript') {
+                    // Using javascript-obfuscator library
+                    const options = {
+                        compact: true,
+                        controlFlowFlattening: level === 'high',
+                        numbersToExpressions: level !== 'low',
+                        simplify: level !== 'high',
+                        stringArray: true,
+                        stringArrayEncoding: ['base64'],
+                        stringArrayThreshold: level === 'high' ? 1 : 0.75,
+                    };
+                    
+                    obfuscatedCode = JavaScriptObfuscator.obfuscate(code, options).getObfuscatedCode();
+                } else {
+                    // Simple obfuscation for other languages (for demonstration)
+                    obfuscatedCode = btoa(unescape(encodeURIComponent(code)));
+                }
+                
+                outputCode.textContent = obfuscatedCode;
+                showNotification('Kode berhasil diobfuscate!', 'success');
+            } catch (error) {
+                outputCode.textContent = `Error: ${error.message}`;
+                showNotification('Terjadi error saat mengobfuscate kode', 'error');
+            }
+        });
+
+        // Copy output to clipboard
+        copyOutputButton.addEventListener('click', () => {
+            const text = outputCode.textContent;
+            if (!text) {
+                showNotification('Tidak ada hasil untuk disalin', 'warning');
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Hasil berhasil disalin ke clipboard!', 'success');
+            }).catch(err => {
+                showNotification('Gagal menyalin ke clipboard', 'error');
             });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
+        });
+
+        // Clear input
+        clearInputButton.addEventListener('click', () => {
+            inputCode.value = '';
+            outputCode.textContent = '';
+            showNotification('Input dibersihkan', 'info');
+        });
+
+        // Download output
+        downloadButton.addEventListener('click', () => {
+            const text = outputCode.textContent;
+            if (!text) {
+                showNotification('Tidak ada hasil untuk didownload', 'warning');
+                return;
             }
             
-            ['dragenter', 'dragover'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, highlight, false);
-            });
+            const language = document.getElementById('languageSelect').value;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `obfuscated-code.${language}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             
-            ['dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, unhighlight, false);
-            });
+            showNotification('File berhasil didownload!', 'success');
+        });
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            notificationText.textContent = message;
+            notification.style.display = 'flex';
             
-            function highlight() {
-                uploadArea.classList.add('dragover');
+            // Set color based on type
+            if (type === 'success') {
+                notification.style.backgroundColor = 'var(--success)';
+            } else if (type === 'error') {
+                notification.style.backgroundColor = 'var(--danger)';
+            } else if (type === 'warning') {
+                notification.style.backgroundColor = 'var(--warning)';
+            } else {
+                notification.style.backgroundColor = 'var(--info)';
             }
             
-            function unhighlight() {
-                uploadArea.classList.remove('dragover');
-            }
-            
-            uploadArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                
-                if (files.length) {
-                    handleFiles(files);
-                }
-            }
-            
-            function handleFileSelect(e) {
-                const files = e.target.files;
-                handleFiles(files);
-            }
-            
-            function handleFiles(files) {
-                if (files.length > 0) {
-                    selectedFile = files[0];
-                    displayFileInfo(selectedFile);
-                    updateButtonState();
-                }
-            }
-            
-            function displayFileInfo(file) {
-                fileName.textContent = file.name;
-                fileSize.textContent = formatFileSize(file.size);
-                fileType.textContent = file.type || 'Tidak diketahui';
-                fileInfo.classList.add('active');
-            }
-            
-            function formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-            
-            function updateButtonState() {
-                const hasFile = selectedFile !== null;
-                const hasPassword = passwordInput.value.length >= 6;
-                
-                encryptBtn.disabled = !(hasFile && hasPassword);
-                decryptBtn.disabled = !(hasFile && hasPassword);
-            }
-            
-            passwordInput.addEventListener('input', updateButtonState);
-            
-            // Enkripsi file
-            encryptBtn.addEventListener('click', async () => {
-                if (!selectedFile || passwordInput.value.length < 6) {
-                    alert('Pilih file dan masukkan kata sandi (minimal 6 karakter)');
-                    return;
-                }
-                
-                try {
-                    showProgress('Mengenkripsi file...');
-                    
-                    // Membaca file sebagai ArrayBuffer
-                    const fileBuffer = await readFileAsArrayBuffer(selectedFile);
-                    
-                    // Generate salt dan IV
-                    const salt = crypto.getRandomValues(new Uint8Array(16));
-                    const iv = crypto.getRandomValues(new Uint8Array(12));
-                    
-                    // Derive key dari password
-                    const key = await deriveKey(passwordInput.value, salt);
-                    
-                    // Enkripsi data
-                    const encryptedData = await crypto.subtle.encrypt(
-                        {
-                            name: 'AES-GCM',
-                            iv: iv
-                        },
-                        key,
-                        fileBuffer
-                    );
-                    
-                    // Gabungkan salt, IV, dan data terenkripsi
-                    const resultArray = new Uint8Array(salt.length + iv.length + encryptedData.byteLength);
-                    resultArray.set(salt, 0);
-                    resultArray.set(iv, salt.length);
-                    resultArray.set(new Uint8Array(encryptedData), salt.length + iv.length);
-                    
-                    // Buat blob dari hasil enkripsi
-                    const resultBlob = new Blob([resultArray], { type: 'application/octet-stream' });
-                    
-                    // Buat nama file dengan ekstensi .encrypted
-                    const encryptedFileName = selectedFile.name + '.encrypted';
-                    
-                    // Siapkan untuk download
-                    prepareDownload(resultBlob, encryptedFileName);
-                    
-                    hideProgress();
-                    showDownloadSection();
-                    
-                } catch (error) {
-                    console.error('Error during encryption:', error);
-                    hideProgress();
-                    alert('Terjadi kesalahan saat mengenkripsi file: ' + error.message);
-                }
-            });
-            
-            // Dekripsi file
-            decryptBtn.addEventListener('click', async () => {
-                if (!selectedFile || passwordInput.value.length < 6) {
-                    alert('Pilih file dan masukkan kata sandi (minimal 6 karakter)');
-                    return;
-                }
-                
-                // Cek jika file adalah file terenkripsi (berakhiran .encrypted)
-                if (!selectedFile.name.endsWith('.encrypted')) {
-                    alert('File ini bukan file terenkripsi. Harap pilih file dengan ekstensi .encrypted');
-                    return;
-                }
-                
-                try {
-                    showProgress('Mendekripsi file...');
-                    
-                    // Membaca file sebagai ArrayBuffer
-                    const fileBuffer = await readFileAsArrayBuffer(selectedFile);
-                    
-                    // Ekstrak salt, IV, dan data terenkripsi
-                    const salt = fileBuffer.slice(0, 16);
-                    const iv = fileBuffer.slice(16, 28);
-                    const encryptedData = fileBuffer.slice(28);
-                    
-                    // Derive key dari password
-                    const key = await deriveKey(passwordInput.value, new Uint8Array(salt));
-                    
-                    // Dekripsi data
-                    const decryptedData = await crypto.subtle.decrypt(
-                        {
-                            name: 'AES-GCM',
-                            iv: new Uint8Array(iv)
-                        },
-                        key,
-                        encryptedData
-                    );
-                    
-                    // Buat blob dari hasil dekripsi
-                    const resultBlob = new Blob([decryptedData]);
-                    
-                    // Buat nama file dengan menghapus .encrypted
-                    let decryptedFileName = selectedFile.name;
-                    if (decryptedFileName.endsWith('.encrypted')) {
-                        decryptedFileName = decryptedFileName.slice(0, -10); // Hapus .encrypted
-                    }
-                    
-                    // Siapkan untuk download
-                    prepareDownload(resultBlob, decryptedFileName);
-                    
-                    hideProgress();
-                    showDownloadSection();
-                    
-                } catch (error) {
-                    console.error('Error during decryption:', error);
-                    hideProgress();
-                    alert('Terjadi kesalahan saat mendekripsi file. Pastikan kata sandi benar dan file tidak rusak.');
-                }
-            });
-            
-            // Fungsi bantu
-            function readFileAsArrayBuffer(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => resolve(reader.result);
-                    reader.onerror = reject;
-                    reader.readAsArrayBuffer(file);
-                });
-            }
-            
-            async function deriveKey(password, salt) {
-                const encoder = new TextEncoder();
-                const passwordBuffer = encoder.encode(password);
-                
-                const importedKey = await crypto.subtle.importKey(
-                    'raw',
-                    passwordBuffer,
-                    'PBKDF2',
-                    false,
-                    ['deriveBits', 'deriveKey']
-                );
-                
-                return crypto.subtle.deriveKey(
-                    {
-                        name: 'PBKDF2',
-                        salt: salt,
-                        iterations: 100000,
-                        hash: 'SHA-256'
-                    },
-                    importedKey,
-                    { name: 'AES-GCM', length: 256 },
-                    false,
-                    ['encrypt', 'decrypt']
-                );
-            }
-            
-            function showProgress(message) {
-                progressContainer.classList.add('active');
-                statusText.textContent = message;
-                progressBar.style.width = '0%';
-                
-                // Animate progress bar (simulasi)
-                let width = 0;
-                const interval = setInterval(() => {
-                    if (width >= 90) {
-                        clearInterval(interval);
-                    } else {
-                        width += 5;
-                        progressBar.style.width = width + '%';
-                    }
-                }, 100);
-            }
-            
-            function hideProgress() {
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    progressContainer.classList.remove('active');
-                }, 500);
-            }
-            
-            function prepareDownload(blob, fileName) {
-                const url = URL.createObjectURL(blob);
-                downloadLink.href = url;
-                downloadLink.download = fileName;
-            }
-            
-            function showDownloadSection() {
-                downloadSection.classList.add('active');
-            }
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Example code for demonstration
+        window.addEventListener('load', () => {
+            inputCode.value = `// Contoh kode JavaScript
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+
+const user = "Developer";
+console.log(greet(user));`;
         });
     </script>
 </body>
