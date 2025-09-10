@@ -6,6 +6,9 @@
     <title>DevToolsHub - All-in-One Developer Tools</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@javascript-obfuscator/core/dist/index.browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
     <style>
         :root {
             --primary: #6366f1;
@@ -185,6 +188,14 @@
             font-size: 1rem;
             display: flex;
             align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            background-color: var(--light);
+        }
+
+        .back-button:hover {
+            background-color: var(--primary);
+            color: white;
         }
 
         .back-button i {
@@ -245,6 +256,7 @@
             color: var(--dark);
             white-space: pre-wrap;
             word-break: break-all;
+            overflow: auto;
         }
 
         .tool-options {
@@ -252,6 +264,9 @@
             padding: 1rem;
             border-radius: 5px;
             margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
         }
 
         .option-group {
@@ -277,6 +292,7 @@
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -323,6 +339,11 @@
             color: white;
         }
 
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.875rem;
+        }
+
         footer {
             background-color: var(--primary);
             color: white;
@@ -342,6 +363,7 @@
             justify-content: center;
             gap: 1.5rem;
             list-style: none;
+            flex-wrap: wrap;
         }
 
         .footer-links a {
@@ -364,6 +386,28 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             display: none;
             z-index: 1000;
+            max-width: 350px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            background-color: var(--light);
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
         /* Responsive Design */
@@ -382,6 +426,10 @@
             
             .actions {
                 flex-direction: column;
+            }
+
+            .tool-options {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -450,7 +498,7 @@
         <section id="obfuscatorTool" class="tool-section">
             <div class="tool-header">
                 <h2><i class="fas fa-lock"></i> Code Obfuscator</h2>
-                <button class="back-button" id="backButton">
+                <button class="back-button">
                     <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
                 </button>
             </div>
@@ -479,20 +527,20 @@
                 <div class="code-input">
                     <div class="code-header">
                         <span>Input Kode</span>
-                        <button class="btn-outline btn-sm" id="clearInput">
+                        <button class="btn-outline btn-sm" id="clearInputObfuscator">
                             <i class="fas fa-trash"></i> Bersihkan
                         </button>
                     </div>
-                    <textarea id="inputCode" placeholder="Tempel kode Anda di sini..."></textarea>
+                    <textarea id="inputCodeObfuscator" placeholder="Tempel kode Anda di sini..."></textarea>
                 </div>
                 <div class="code-output">
                     <div class="code-header">
                         <span>Hasil Obfuscation</span>
-                        <button class="btn-outline btn-sm" id="copyOutput">
+                        <button class="btn-outline btn-sm" id="copyOutputObfuscator">
                             <i class="fas fa-copy"></i> Salin
                         </button>
                     </div>
-                    <pre id="outputCode"></pre>
+                    <pre id="outputCodeObfuscator"></pre>
                 </div>
             </div>
 
@@ -500,13 +548,291 @@
                 <button class="btn btn-primary" id="obfuscateButton">
                     <i class="fas fa-lock"></i> Obfuscate Kode
                 </button>
-                <button class="btn btn-secondary" id="downloadButton">
+                <button class="btn btn-secondary" id="downloadObfuscator">
                     <i class="fas fa-download"></i> Download Hasil
                 </button>
             </div>
         </section>
 
-        <!-- Other tool sections would be added here -->
+        <!-- Formatter Tool Section -->
+        <section id="formatterTool" class="tool-section">
+            <div class="tool-header">
+                <h2><i class="fas fa-indent"></i> Code Formatter</h2>
+                <button class="back-button">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
+                </button>
+            </div>
+
+            <div class="tool-options">
+                <div class="option-group">
+                    <label for="formatLanguageSelect">Pilih Bahasa</label>
+                    <select id="formatLanguageSelect">
+                        <option value="javascript">JavaScript</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="json">JSON</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label for="indentSize">Ukuran Indentasi</label>
+                    <input type="number" id="indentSize" value="2" min="1" max="8">
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-input">
+                    <div class="code-header">
+                        <span>Input Kode</span>
+                        <button class="btn-outline btn-sm" id="clearInputFormatter">
+                            <i class="fas fa-trash"></i> Bersihkan
+                        </button>
+                    </div>
+                    <textarea id="inputCodeFormatter" placeholder="Tempel kode Anda di sini..."></textarea>
+                </div>
+                <div class="code-output">
+                    <div class="code-header">
+                        <span>Hasil Format</span>
+                        <button class="btn-outline btn-sm" id="copyOutputFormatter">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <pre id="outputCodeFormatter"></pre>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="formatButton">
+                    <i class="fas fa-indent"></i> Format Kode
+                </button>
+                <button class="btn btn-secondary" id="downloadFormatter">
+                    <i class="fas fa-download"></i> Download Hasil
+                </button>
+            </div>
+        </section>
+
+        <!-- Minifier Tool Section -->
+        <section id="minifierTool" class="tool-section">
+            <div class="tool-header">
+                <h2><i class="fas fa-compress-alt"></i> Code Minifier</h2>
+                <button class="back-button">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
+                </button>
+            </div>
+
+            <div class="tool-options">
+                <div class="option-group">
+                    <label for="minifyLanguageSelect">Pilih Bahasa</label>
+                    <select id="minifyLanguageSelect">
+                        <option value="javascript">JavaScript</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-input">
+                    <div class="code-header">
+                        <span>Input Kode</span>
+                        <button class="btn-outline btn-sm" id="clearInputMinifier">
+                            <i class="fas fa-trash"></i> Bersihkan
+                        </button>
+                    </div>
+                    <textarea id="inputCodeMinifier" placeholder="Tempel kode Anda di sini..."></textarea>
+                </div>
+                <div class="code-output">
+                    <div class="code-header">
+                        <span>Hasil Minify</span>
+                        <button class="btn-outline btn-sm" id="copyOutputMinifier">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <pre id="outputCodeMinifier"></pre>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="minifyButton">
+                    <i class="fas fa-compress-alt"></i> Minify Kode
+                </button>
+                <button class="btn btn-secondary" id="downloadMinifier">
+                    <i class="fas fa-download"></i> Download Hasil
+                </button>
+            </div>
+        </section>
+
+        <!-- Converter Tool Section -->
+        <section id="converterTool" class="tool-section">
+            <div class="tool-header">
+                <h2><i class="fas fa-exchange-alt"></i> Converter</h2>
+                <button class="back-button">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
+                </button>
+            </div>
+
+            <div class="tool-options">
+                <div class="option-group">
+                    <label for="inputFormat">Format Input</label>
+                    <select id="inputFormat">
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                        <option value="yaml">YAML</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label for="outputFormat">Format Output</label>
+                    <select id="outputFormat">
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                        <option value="yaml">YAML</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-input">
+                    <div class="code-header">
+                        <span>Input Data</span>
+                        <button class="btn-outline btn-sm" id="clearInputConverter">
+                            <i class="fas fa-trash"></i> Bersihkan
+                        </button>
+                    </div>
+                    <textarea id="inputCodeConverter" placeholder="Tempel data Anda di sini..."></textarea>
+                </div>
+                <div class="code-output">
+                    <div class="code-header">
+                        <span>Hasil Konversi</span>
+                        <button class="btn-outline btn-sm" id="copyOutputConverter">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <pre id="outputCodeConverter"></pre>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="convertButton">
+                    <i class="fas fa-exchange-alt"></i> Konversi
+                </button>
+                <button class="btn btn-secondary" id="downloadConverter">
+                    <i class="fas fa-download"></i> Download Hasil
+                </button>
+            </div>
+        </section>
+
+        <!-- Validator Tool Section -->
+        <section id="validatorTool" class="tool-section">
+            <div class="tool-header">
+                <h2><i class="fas fa-check-circle"></i> Validator</h2>
+                <button class="back-button">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
+                </button>
+            </div>
+
+            <div class="tool-options">
+                <div class="option-group">
+                    <label for="validateLanguageSelect">Pilih Bahasa</label>
+                    <select id="validateLanguageSelect">
+                        <option value="json">JSON</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="javascript">JavaScript</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-input">
+                    <div class="code-header">
+                        <span>Input Kode</span>
+                        <button class="btn-outline btn-sm" id="clearInputValidator">
+                            <i class="fas fa-trash"></i> Bersihkan
+                        </button>
+                    </div>
+                    <textarea id="inputCodeValidator" placeholder="Tempel kode Anda di sini..."></textarea>
+                </div>
+                <div class="code-output">
+                    <div class="code-header">
+                        <span>Hasil Validasi</span>
+                    </div>
+                    <pre id="outputCodeValidator"></pre>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="validateButton">
+                    <i class="fas fa-check-circle"></i> Validasi Kode
+                </button>
+            </div>
+        </section>
+
+        <!-- Generator Tool Section -->
+        <section id="generatorTool" class="tool-section">
+            <div class="tool-header">
+                <h2><i class="fas fa-barcode"></i> Generator</h2>
+                <button class="back-button">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Semua Tools
+                </button>
+            </div>
+
+            <div class="tool-options">
+                <div class="option-group">
+                    <label for="generatorType">Jenis Generator</label>
+                    <select id="generatorType">
+                        <option value="uuid">UUID</option>
+                        <option value="password">Password</option>
+                        <option value="hash">Hash</option>
+                        <option value="lorem">Lorem Ipsum</option>
+                    </select>
+                </div>
+                <div class="option-group" id="passwordOptions">
+                    <label for="passwordLength">Panjang Password</label>
+                    <input type="number" id="passwordLength" value="12" min="6" max="32">
+                </div>
+                <div class="option-group" id="hashOptions">
+                    <label for="hashAlgorithm">Algoritma Hash</label>
+                    <select id="hashAlgorithm">
+                        <option value="md5">MD5</option>
+                        <option value="sha1">SHA-1</option>
+                        <option value="sha256">SHA-256</option>
+                        <option value="sha512">SHA-512</option>
+                    </select>
+                </div>
+                <div class="option-group" id="loremOptions">
+                    <label for="loremLength">Jumlah Kata</label>
+                    <input type="number" id="loremLength" value="50" min="5" max="500">
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-input" style="display: none;">
+                    <div class="code-header">
+                        <span>Input</span>
+                    </div>
+                    <textarea id="inputCodeGenerator" placeholder="Input (jika diperlukan)..."></textarea>
+                </div>
+                <div class="code-output">
+                    <div class="code-header">
+                        <span>Hasil Generator</span>
+                        <button class="btn-outline btn-sm" id="copyOutputGenerator">
+                            <i class="fas fa-copy"></i> Salin
+                        </button>
+                    </div>
+                    <pre id="outputCodeGenerator"></pre>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" id="generateButton">
+                    <i class="fas fa-barcode"></i> Generate
+                </button>
+                <button class="btn btn-secondary" id="downloadGenerator">
+                    <i class="fas fa-download"></i> Download Hasil
+                </button>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -539,13 +865,6 @@
         const themeToggle = document.getElementById('themeToggle');
         const toolsGrid = document.getElementById('toolsGrid');
         const toolSections = document.querySelectorAll('.tool-section');
-        const backButton = document.getElementById('backButton');
-        const obfuscateButton = document.getElementById('obfuscateButton');
-        const copyOutputButton = document.getElementById('copyOutput');
-        const clearInputButton = document.getElementById('clearInput');
-        const downloadButton = document.getElementById('downloadButton');
-        const inputCode = document.getElementById('inputCode');
-        const outputCode = document.getElementById('outputCode');
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notificationText');
 
@@ -554,10 +873,18 @@
             document.body.classList.toggle('dark-mode');
             if (document.body.classList.contains('dark-mode')) {
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
             } else {
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
             }
         });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
 
         // Tool Navigation
         toolsGrid.addEventListener('click', (e) => {
@@ -568,8 +895,11 @@
             showToolSection(toolId);
         });
 
-        backButton.addEventListener('click', () => {
-            showToolSection(null);
+        // Back button functionality
+        document.querySelectorAll('.back-button').forEach(button => {
+            button.addEventListener('click', () => {
+                showToolSection(null);
+            });
         });
 
         function showToolSection(toolId) {
@@ -588,89 +918,231 @@
             }
         }
 
-        // Obfuscation functionality
-        obfuscateButton.addEventListener('click', () => {
-            const code = inputCode.value.trim();
-            if (!code) {
-                showNotification('Masukkan kode terlebih dahulu', 'warning');
-                return;
-            }
+        // Obfuscator functionality
+        const obfuscateButton = document.getElementById('obfuscateButton');
+        const copyOutputObfuscator = document.getElementById('copyOutputObfuscator');
+        const clearInputObfuscator = document.getElementById('clearInputObfuscator');
+        const downloadObfuscator = document.getElementById('downloadObfuscator');
+        const inputCodeObfuscator = document.getElementById('inputCodeObfuscator');
+        const outputCodeObfuscator = document.getElementById('outputCodeObfuscator');
 
-            const language = document.getElementById('languageSelect').value;
-            const level = document.getElementById('obfuscationLevel').value;
-            
-            try {
-                let obfuscatedCode = '';
+        if (obfuscateButton) {
+            obfuscateButton.addEventListener('click', () => {
+                const code = inputCodeObfuscator.value.trim();
+                if (!code) {
+                    showNotification('Masukkan kode terlebih dahulu', 'warning');
+                    return;
+                }
+
+                const language = document.getElementById('languageSelect').value;
+                const level = document.getElementById('obfuscationLevel').value;
                 
-                if (language === 'javascript') {
-                    // Using javascript-obfuscator library
-                    const options = {
-                        compact: true,
-                        controlFlowFlattening: level === 'high',
-                        numbersToExpressions: level !== 'low',
-                        simplify: level !== 'high',
-                        stringArray: true,
-                        stringArrayEncoding: ['base64'],
-                        stringArrayThreshold: level === 'high' ? 1 : 0.75,
-                    };
+                try {
+                    let obfuscatedCode = '';
                     
-                    obfuscatedCode = JavaScriptObfuscator.obfuscate(code, options).getObfuscatedCode();
-                } else {
-                    // Simple obfuscation for other languages (for demonstration)
-                    obfuscatedCode = btoa(unescape(encodeURIComponent(code)));
+                    if (language === 'javascript') {
+                        // Using javascript-obfuscator library
+                        const options = {
+                            compact: true,
+                            controlFlowFlattening: level === 'high',
+                            numbersToExpressions: level !== 'low',
+                            simplify: level !== 'high',
+                            stringArray: true,
+                            stringArrayEncoding: ['base64'],
+                            stringArrayThreshold: level === 'high' ? 1 : 0.75,
+                        };
+                        
+                        obfuscatedCode = JavaScriptObfuscator.obfuscate(code, options).getObfuscatedCode();
+                    } else {
+                        // Simple obfuscation for other languages (for demonstration)
+                        obfuscatedCode = btoa(unescape(encodeURIComponent(code)));
+                    }
+                    
+                    outputCodeObfuscator.textContent = obfuscatedCode;
+                    showNotification('Kode berhasil diobfuscate!', 'success');
+                } catch (error) {
+                    outputCodeObfuscator.textContent = `Error: ${error.message}`;
+                    showNotification('Terjadi error saat mengobfuscate kode', 'error');
+                }
+            });
+        }
+
+        if (copyOutputObfuscator) {
+            copyOutputObfuscator.addEventListener('click', () => {
+                const text = outputCodeObfuscator.textContent;
+                if (!text) {
+                    showNotification('Tidak ada hasil untuk disalin', 'warning');
+                    return;
                 }
                 
-                outputCode.textContent = obfuscatedCode;
-                showNotification('Kode berhasil diobfuscate!', 'success');
-            } catch (error) {
-                outputCode.textContent = `Error: ${error.message}`;
-                showNotification('Terjadi error saat mengobfuscate kode', 'error');
-            }
-        });
-
-        // Copy output to clipboard
-        copyOutputButton.addEventListener('click', () => {
-            const text = outputCode.textContent;
-            if (!text) {
-                showNotification('Tidak ada hasil untuk disalin', 'warning');
-                return;
-            }
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showNotification('Hasil berhasil disalin ke clipboard!', 'success');
-            }).catch(err => {
-                showNotification('Gagal menyalin ke clipboard', 'error');
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Hasil berhasil disalin ke clipboard!', 'success');
+                }).catch(err => {
+                    showNotification('Gagal menyalin ke clipboard', 'error');
+                });
             });
-        });
+        }
 
-        // Clear input
-        clearInputButton.addEventListener('click', () => {
-            inputCode.value = '';
-            outputCode.textContent = '';
-            showNotification('Input dibersihkan', 'info');
-        });
+        if (clearInputObfuscator) {
+            clearInputObfuscator.addEventListener('click', () => {
+                inputCodeObfuscator.value = '';
+                outputCodeObfuscator.textContent = '';
+                showNotification('Input dibersihkan', 'info');
+            });
+        }
 
-        // Download output
-        downloadButton.addEventListener('click', () => {
-            const text = outputCode.textContent;
-            if (!text) {
-                showNotification('Tidak ada hasil untuk didownload', 'warning');
-                return;
+        if (downloadObfuscator) {
+            downloadObfuscator.addEventListener('click', () => {
+                const text = outputCodeObfuscator.textContent;
+                if (!text) {
+                    showNotification('Tidak ada hasil untuk didownload', 'warning');
+                    return;
+                }
+                
+                const language = document.getElementById('languageSelect').value;
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `obfuscated-code.${language}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showNotification('File berhasil didownload!', 'success');
+            });
+        }
+
+        // Formatter functionality
+        const formatButton = document.getElementById('formatButton');
+        const copyOutputFormatter = document.getElementById('copyOutputFormatter');
+        const clearInputFormatter = document.getElementById('clearInputFormatter');
+        const downloadFormatter = document.getElementById('downloadFormatter');
+        const inputCodeFormatter = document.getElementById('inputCodeFormatter');
+        const outputCodeFormatter = document.getElementById('outputCodeFormatter');
+
+        if (formatButton) {
+            formatButton.addEventListener('click', () => {
+                const code = inputCodeFormatter.value.trim();
+                if (!code) {
+                    showNotification('Masukkan kode terlebih dahulu', 'warning');
+                    return;
+                }
+
+                const language = document.getElementById('formatLanguageSelect').value;
+                const indentSize = parseInt(document.getElementById('indentSize').value);
+                
+                try {
+                    let formattedCode = '';
+                    
+                    if (language === 'javascript') {
+                        formattedCode = js_beautify(code, { indent_size: indentSize });
+                    } else if (language === 'html') {
+                        formattedCode = html_beautify(code, { indent_size: indentSize });
+                    } else if (language === 'css') {
+                        formattedCode = css_beautify(code, { indent_size: indentSize });
+                    } else if (language === 'json') {
+                        formattedCode = JSON.stringify(JSON.parse(code), null, indentSize);
+                    }
+                    
+                    outputCodeFormatter.textContent = formattedCode;
+                    showNotification('Kode berhasil diformat!', 'success');
+                } catch (error) {
+                    outputCodeFormatter.textContent = `Error: ${error.message}`;
+                    showNotification('Terjadi error saat memformat kode', 'error');
+                }
+            });
+        }
+
+        // Minifier functionality (simplified)
+        const minifyButton = document.getElementById('minifyButton');
+        if (minifyButton) {
+            minifyButton.addEventListener('click', () => {
+                const code = document.getElementById('inputCodeMinifier').value.trim();
+                if (!code) {
+                    showNotification('Masukkan kode terlebih dahulu', 'warning');
+                    return;
+                }
+                
+                const language = document.getElementById('minifyLanguageSelect').value;
+                let minifiedCode = '';
+                
+                // Simple minification by removing whitespace and comments
+                if (language === 'javascript') {
+                    minifiedCode = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ');
+                } else if (language === 'html') {
+                    minifiedCode = code.replace(/\s+/g, ' ').replace(/>\s+</g, '><');
+                } else if (language === 'css') {
+                    minifiedCode = code.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/;\s}/g, '}');
+                }
+                
+                document.getElementById('outputCodeMinifier').textContent = minifiedCode;
+                showNotification('Kode berhasil diminify!', 'success');
+            });
+        }
+
+        // Generator functionality
+        const generateButton = document.getElementById('generateButton');
+        if (generateButton) {
+            generateButton.addEventListener('click', () => {
+                const generatorType = document.getElementById('generatorType').value;
+                let result = '';
+                
+                if (generatorType === 'uuid') {
+                    result = generateUUID();
+                } else if (generatorType === 'password') {
+                    const length = parseInt(document.getElementById('passwordLength').value);
+                    result = generatePassword(length);
+                } else if (generatorType === 'hash') {
+                    const algorithm = document.getElementById('hashAlgorithm').value;
+                    const input = document.getElementById('inputCodeGenerator').value || 'sample';
+                    result = generateHash(input, algorithm);
+                } else if (generatorType === 'lorem') {
+                    const length = parseInt(document.getElementById('loremLength').value);
+                    result = generateLoremIpsum(length);
+                }
+                
+                document.getElementById('outputCodeGenerator').textContent = result;
+                showNotification('Berhasil generate!', 'success');
+            });
+        }
+
+        // Helper functions
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function generatePassword(length) {
+            const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += charset.charAt(Math.floor(Math.random() * charset.length));
             }
-            
-            const language = document.getElementById('languageSelect').value;
-            const blob = new Blob([text], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `obfuscated-code.${language}`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showNotification('File berhasil didownload!', 'success');
-        });
+            return password;
+        }
+
+        function generateHash(input, algorithm) {
+            // Simple hash simulation for demo purposes
+            if (algorithm === 'md5') return 'md5_' + btoa(input).substring(0, 20);
+            if (algorithm === 'sha1') return 'sha1_' + btoa(input).substring(0, 24);
+            if (algorithm === 'sha256') return 'sha256_' + btoa(input).substring(0, 32);
+            if (algorithm === 'sha512') return 'sha512_' + btoa(input + input).substring(0, 64);
+            return 'unknown_algorithm';
+        }
+
+        function generateLoremIpsum(wordCount) {
+            const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua'];
+            let result = '';
+            for (let i = 0; i < wordCount; i++) {
+                result += words[Math.floor(Math.random() * words.length)] + ' ';
+                if (i % 10 === 0 && i > 0) result += '\n';
+            }
+            return result;
+        }
 
         // Show notification
         function showNotification(message, type = 'info') {
@@ -696,13 +1168,20 @@
 
         // Example code for demonstration
         window.addEventListener('load', () => {
-            inputCode.value = `// Contoh kode JavaScript
+            if (document.getElementById('inputCodeObfuscator')) {
+                document.getElementById('inputCodeObfuscator').value = `// Contoh kode JavaScript
 function greet(name) {
     return "Hello, " + name + "!";
 }
 
 const user = "Developer";
 console.log(greet(user));`;
+            }
+            
+            if (document.getElementById('inputCodeFormatter')) {
+                document.getElementById('inputCodeFormatter').value = `// Contoh kode JavaScript yang tidak terformat
+function calculate(a,b){return a+b;}const result=calculate(5,3);console.log("Result:",result);`;
+            }
         });
     </script>
 </body>
